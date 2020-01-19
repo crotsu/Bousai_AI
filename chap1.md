@@ -47,7 +47,7 @@ x_train, x_test = x_train / 255.0, x_test / 255.0
 # 訓練のためにオプティマイザと損失関数を選びます．
 model = tf.keras.models.Sequential([
   tf.keras.layers.Flatten(input_shape=(28, 28)),
-  tf.keras.layers.Dense(10, activation='relu'),
+  tf.keras.layers.Dense(8, activation='relu'),
   tf.keras.layers.Dropout(0.2),
   tf.keras.layers.Dense(10, activation='softmax')
 ])
@@ -63,7 +63,8 @@ model.evaluate(x_test,  y_test, verbose=2)
 
 
 こんな感じになる．
-<img width="1187" alt="colab4" src="https://user-images.githubusercontent.com/1255664/72673686-6e28a000-3ab1-11ea-849e-c96ee7006c73.png">
+<img width="1179" alt="colab4" src="https://user-images.githubusercontent.com/1255664/72675169-a76a0b80-3ac3-11ea-9240-2255408ecf50.png">
+
 
 ## 4 実行させる
 
@@ -75,10 +76,10 @@ model.evaluate(x_test,  y_test, verbose=2)
 
 ## 5 パラメータを変えてみる
 
-次のプログラムの10という数値を128に変更してみると，正答率が変化する．この数値は，ニューラルネットワークの中間層のニューロン数の個数である．これを多くすると学習性能が向上する．その反面，過学習を起こしやすくなり，学習時間も増加する．
+次のプログラムの8という数値を128に変更してみると，正答率が変化する．この数値は，ニューラルネットワークの中間層のニューロン数の個数である．これを多くすると学習性能が向上する．その反面，過学習を起こしやすくなり，学習時間も増加する．
 
 ```
-  tf.keras.layers.Dense(10, activation='relu'),
+  tf.keras.layers.Dense(8, activation='relu'),
 ```
 ↓
 
@@ -88,7 +89,7 @@ model.evaluate(x_test,  y_test, verbose=2)
 
 <img width="1173" alt="colab6" src="https://user-images.githubusercontent.com/1255664/72673840-d1670200-3ab2-11ea-9f3f-42d1c1b0ce99.png">
 
-中間ニューロンの数を10から128に増やすと，正答率が0.9780まであがる．一方，学習時間が各エポックで1秒多くかかっている．
+中間ニューロンの数を8から128に増やすと，正答率が0.9780まであがる．一方，学習時間が各エポックで1秒多くかかっている．
 
 ## 6 GPUでもやってみる
 GPUも無料に利用できる（利用制限はある）
