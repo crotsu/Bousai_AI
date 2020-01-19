@@ -3,7 +3,7 @@
 ## Google Colaboratory上で，TensorFlow+Kerasで文字認識（MNISTデータ）をやってみよう．
 
 
-## 1 [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb)にアクセスする．
+## 1 [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb){:target="_blank"}にアクセスする．
 
 googleアカウントを持っていれば，以下のようなページにアクセスできる．
 
