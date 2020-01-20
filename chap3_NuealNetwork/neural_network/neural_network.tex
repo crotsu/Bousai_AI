@@ -1,0 +1,311 @@
+\documentclass[11pt,a4paper]{jsarticle}
+
+\usepackage{reference} % Use reference.sty
+
+\title{\bf ニューラルネットワーク} % Title
+\author{木更津工業高等専門学校 \\大枝真一} % Name
+\date{} % Date
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+	　ニューラルネットワークは，脳の神経回路網をモデル化した機械学習の手法である．近年，深層学習
+	（Deep Learning）の登場により再びニューラルネットワークが注目を集めている．深層学習は，
+	画像認識，音声認識，自然言語処理など様々な分野で取り入られており，Google社をはじめ，
+	多くの企業で利用，研究がされている．本資料では，ニューラルネットワークの基本的な原理，
+	学習方法について記述する．
+
+\section{基本構造}
+	　ニューラルネットワークは，複数のニューロンとニューロン同士を結合するシナプスから構成される．
+	シナプスは各結合の強さを表す結合重みを持っている．ニューラルネットワークの図を
+	図\ref{fig:neural_network}に示す．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=5.5cm,clip]{fig/neural_network.eps}
+		\caption{ニューラルネットワーク}
+		\label{fig:neural_network}
+	\end{figure}
+	
+	ニューラルネットワークは，入力層，中間層，出力層の多層構造になっており，各ニューロンは前の層の
+	ニューロンの出力を入力として受け取り，計算を行ったあと，次のニューロンへと出力する．各ニューロンの
+	出力が次々と伝播していき，出力層のニューロンからネットワークの出力を得る．ニューロンの構造を
+	図\ref{fig:neuron}に示す．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=6cm,clip]{fig/neuron.eps}
+		\caption{ニューロンのモデル}
+		\label{fig:neuron}
+	\end{figure}
+	
+	ニューロンは複数の入力を受け取り，1つの値を出力する．ある層のニューロン$j$は，その前の層の
+	$I$個のニューロンから入力$x$を受け取り，重み付き和を計算する．その重み付き和からニューロン$j$の
+	バイアス$\theta_j$を引いた値を活性化関数の引数としてその値を出力する．
+	これらを式で表すと以下のようになる．
+	
+	\begin{eqnarray}
+		X_j & = & \sum_{i=1}^{I} w_{ij} x_i - \theta_j \\
+		o_j & = & f(X_j)
+	\end{eqnarray}
+	
+	活性化関数には，以下のシグモイド関数や双曲線正接関数などが使われる．
+	
+	\begin{eqnarray}
+		f(x) & = & \frac{1}{1 + \exp(-\epsilon x)} \\
+		f(x) & = & \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+	\end{eqnarray}
+	
+	シグモイド関数と双曲線正接関数のグラフは図\ref{fig:sigmoid_tanh}のような形となる．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 9.5cm]{fig/sigmoid_tanh.eps}
+		\caption{シグモイド関数と双曲線正接関数のグラフ}
+		\label{fig:sigmoid_tanh}
+	\end{figure}
+
+	近年，これらの活性化関数の代わりに正規化線形関数が利用されることが多くなっている．正規化線形関数の
+	式とグラフを以下に示す．
+	
+	\begin{eqnarray}
+		f(x) = \max(0, x)
+	\end{eqnarray}
+		
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 9.5cm]{fig/relu.eps}
+		\caption{正規化線形関数のグラフ}
+		\label{fig:relu}
+	\end{figure}
+			
+	なお，正規化線形関数を活性化関数とするニューロンのことをReLU（Rectified Linear Unit）という．
+	以上の計算を入力層側のニューロンから順に行う．ただし，入力層のニューロンはこれらの計算を行わず，
+	入力をそのまま出力する．この前向きの計算により，入力層への入力に対し，中間層を経て，出力層から
+	出力を得ることができる．
+	
+\section{学習の目的}
+	　ニューラルネットワークは，理想の出力に近いほど性能が高いといえる．各出力ニューロン$k$に
+	対応する教師信号$t_k$が与えられたとき，各入力パターンに対する誤差$E_p$とP個の入力パターンの誤差の
+	総和$E_{all}$は以下の式で表すことができる．
+
+	\begin{eqnarray}
+	E_p & = & \frac{1}{2}\sum_{k = 1}^{K}(o_k - t_k)^2 \\
+	E_{all} & = & \sum_{p = 1}^{P} E_p
+	\end{eqnarray}
+
+	ニューラルネットワークの学習は，この誤差総和$E_{all}$を最小化し，入力に対して適切な出力が
+	得られるように各結合重みを調整することである．
+
+	
+\section{仮想ニューロン}
+	　ニューラルネットワークの出力を最適化するには，各結合重みと閾値を調整すれば良いが，それぞれを
+	修正するのは手間がかかる．そこで閾値を重みとして扱うために仮想ニューロンを導入する．
+	入力層，中間層，出力層のニューロン数がそれぞれ$I$個，$J$個，$K$個のニューラルネットワークに
+	仮想ニューロンを導入した形を図\ref{fig:virtual_neuron}に示す．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 9cm]{fig/virtual_neuron.eps}
+		\caption{仮想ニューロン}
+		\label{fig:virtual_neuron}
+	\end{figure}
+	
+	仮想ニューロンは出力層を除く，各層のニューロンの最後に追加する．図\ref{fig:virtual_neuron}の
+	ニューラルネットワークでは，$I + 1$番目，$J + 1$番目に追加している．各仮想ニューロンは次の層の
+	全ニューロンと結合しており，結合先のニューロンの閾値を結合重みとしている．また，各仮想ニューロンは
+	常に$1$を出力している．これにより，式(1)は以下のように置き換えられる．
+	
+	\begin{eqnarray}
+	X_j & = & \sum_{i = 1}^{I} w_{ij} o_i - \theta_j \nonumber \\
+	& = & \sum_{i = 1}^{I} w_{ij} o_i + w_{I + 1, j} \nonumber \\
+	& = & \sum_{i = 1}^{I} w_{ij} o_i + w_{I + 1, j} \cdot 1 \nonumber \\
+	& = & \sum_{i = 1}^{I} w_{ij} o_i + w_{I + 1, j} \cdot o_{I + 1} \nonumber \\
+	& = & \sum_{i = 1}^{I + 1} w_{ij} o_i
+	\end{eqnarray}
+	
+	式(8)より，閾値も重みとして学習により適切に修正が可能となる．
+
+\section{最急降下法}
+	　ニューラルネットワークの重みを修正するための手法として最急降下法を用いる．
+	最急降下法は，関数$f(x)$の傾きから繰り返し$x$を更新し，極小値を求める反復法である．
+	最急降下法の更新は以下の式で行う．
+	
+	\begin{equation}
+	x = x - \eta \frac{\partial f(x)}{\partial x}
+	\end{equation}
+	
+	$\eta$は学習係数で$\eta = 0.01$など小さい値をあらかじめ決めておく．$\eta$を大きくするほど学習速度は
+	向上するが大きすぎると収束せず振動や発散をしてしまう．逆に小さいほど，学習は安定して収束するが学習速度が
+	低下してしまう．したがって，$\eta$は適切な値の設定が必要となる．
+	
+	以下の図\ref{fig:sdm}ような2次関数の場合を考えてみる．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 6cm]{fig/sdm.eps}
+		\caption{最急降下法}
+		\label{fig:sdm}
+	\end{figure}
+	
+	最初に適当に$x$の初期値を決める．初期値から偏微分$\frac{\partial f(x)}{\partial x}$を求め，
+	式(9)に代入し，$x$を更新する．このとき，$x$が極小値のときよりも大きければ
+	傾きは$\frac{\partial f(x)}{\partial x} > 0$となるため，$x$は小さくなり，$f(x)$は
+	極小値に近づく．それに対して，$x$が極小値のときよりも小さければ傾きは
+	$\frac{\partial f(x)}{\partial x} < 0$となるため，$x$は大きくなり，$f(x)$はやはり
+	極小値に近づく．このように$x$がどちらの場合でも更新後$f(x)$は極小値に近づく．
+	また，傾きは極小値に近づくほどゆるやかになるため，修正量も小さくなり，$\eta$が適切な値の場合は，
+	振動をせずに収束に向かう．このように最急降下法では，着実に極小値には近づくが，関数の形状や
+	初期値によっては，最小値を求めることができない場合がある．
+
+\section{誤差逆伝播法}
+	　最急降下法を用いて図\ref{fig:bp}のようにニューラルネットワークの出力層から入力層に向かって
+	重みの調整を行う手法を誤差逆伝播法（Back Propagation）という．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 5.5cm]{fig/backpropagation.eps}
+		\caption{誤差逆伝播法}
+		\label{fig:bp}
+	\end{figure}
+	
+	学習の目的は誤差総和$E_{all}$を最小化することだが$E_{all}$を最小化することは困難であるため，
+	各パターンの誤差$E_p$が最小となるように重みを更新する．重みが変化すると出力と誤差も変化するため，
+	$E_p$は$w$を引数とした関数$E_p(w)$と考えることができる．したがって，
+	$\frac{\partial E_p(w)}{\partial w}$を求めて，$w$を更新することで$E_p$を小さくすることができる．
+	最急降下法を用いた重み$w$の更新式は以下のようになる．
+	
+	\begin{equation}
+	w = w - \eta \frac{\partial E_p}{\partial w}
+	\end{equation}
+	
+	式(10)を用いて各重みを出力層から入力層に向かって順に更新していく．
+	図\ref{fig:bp_detail}のようなニューラルネットワークの場合を考える．
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width = 12cm]{fig/bp_detail.eps}
+		\caption{誤差逆伝播法の手順}
+		\label{fig:bp_detail}
+	\end{figure}
+	
+	最初に中間層-出力層の任意の重み$w_{jk}$について考える．$E_p$の式には直接$w_{jk}$は
+	存在しないので合成関数の微分を考える．$\frac{\partial E_p}{\partial w_{jk}}$の
+	合成関数の微分は以下のようになる．
+	
+	\begin{equation}
+		\frac{\partial E_p}{\partial w_{jk}} = \frac{\partial E_p}{\partial o_k}
+		\frac{\partial o_k}{\partial X_k} \frac{\partial X_k}{\partial w_{jk}}
+	\end{equation}
+	
+	式(11)の偏微分をそれぞれ計算すると以下のようになる．
+	
+	\begin{eqnarray}
+		\frac{\partial E_p}{\partial o_k} & = & \frac{1}{2}\{2(o_k - t_k)\}
+		= o_k - t_k \\
+		\frac{\partial o_k}{\partial X_k} & = & f'(X_k) \\
+		\frac{\partial X_k}{\partial w_{jk}} & = & o_j 
+	\end{eqnarray}
+	
+	以上より，中間層-出力層の重みの更新式は以下のようになる．
+	
+	\begin{equation}
+		w_{jk} = w_{jk} - \eta (o_k - t_k) f'(X_k) o_j
+	\end{equation}
+	
+	さらに出力ニューロンに関係する式を$\delta_k$としてまとめると式(15)は次のように表せる．
+	
+	\begin{eqnarray}
+		\delta_k & = & \frac{\partial E_p}{\partial o_k} \frac{\partial o_k}{\partial X_k} \\
+		& = & (o_k - t_k)f'(X_k) \\
+		w_{jk} & = &　w_{jk} - \eta \delta_k o_j
+	\end{eqnarray}
+	
+	次に中間層以下の重み$w_{ij}$について考える．中間層以下の重みの合成関数の微分は以下のようになる．
+	
+	\begin{eqnarray}
+		\frac{\partial E_p}{\partial w_{ij}} & = &
+		\sum_{k = 1}^{K} \frac{\partial E_p}{\partial o_k}
+		\frac{\partial o_k}{\partial X_k} \frac{\partial X_k}{\partial o_j}
+		\frac{\partial o_j}{\partial X_j} \frac{\partial X_j}{\partial w_{ij}}
+	\end{eqnarray}
+	
+	式(19)では，注目ニューロンより上位の層で結合している全てのニューロンの誤差を考慮するために$\sum$を取っている．
+	$\frac{\partial E_p}{\partial o_k} \frac{\partial o_k}{\partial X_k}$は式(17)の
+	$\delta_k$が代入できるので，それ以外の微分について考える．各偏微分は以下のように計算できる．
+	
+	\begin{eqnarray}
+		\frac{\partial X_k}{\partial o_j} & = & w_{jk} \\
+		\frac{\partial o_j}{\partial X_j} & = & f'(X_j) \\
+		\frac{\partial X_j}{\partial w_{ij}} & = & o_i 
+	\end{eqnarray}
+	
+	以上より，中間層以下の重みの更新式は以下のようになる．
+	
+	\begin{eqnarray}
+	\delta_j & = & \sum_{k = 1}^{K} \frac{\partial E_p}{\partial o_k}
+	\frac{\partial o_k}{\partial X_k} \frac{\partial X_k}{\partial o_j}
+	\frac{\partial o_j}{\partial X_j} \\
+	& = & \sum_{k = 1}^{K} \delta_k w_{jk} f'(X_j) \\
+	w_{ij} & = & w_{ij} - \eta \delta_j o_i
+	\end{eqnarray}
+	
+	以後，同じように繰り返し$\delta$を求めていけば，全ての重みを式(25)で修正することができる．
+	活性化関数がシグモイド関数の場合，$f'(x)$は以下のようになる．
+
+	\begin{eqnarray}
+		f'(x) & = & \frac{\epsilon \exp(-\epsilon x)}{(1 + \exp(-\epsilon x))^2} \\
+		& = & \epsilon \cdot \frac{\exp(-\epsilon x)}{1 + \exp(-\epsilon x)}
+		\cdot \frac{1}{1 + \exp(-\epsilon x)} \nonumber \\
+		& = & \epsilon \cdot \frac{1 + \exp(-\epsilon x) - 1}{1 + \exp(-\epsilon x)}
+		\cdot \frac{1}{1 + \exp(-\epsilon x)} \nonumber \\
+		& = & \epsilon \cdot \Biggl(1 - \frac{1}{1 + \exp(-\epsilon x)}\Biggr)
+		\cdot \frac{1}{1 + \exp(-\epsilon x)} \nonumber \\
+		& = & \epsilon (1 - f(x))f(x) \nonumber \\
+		f(X_k) = o_kより \nonumber \\
+		f'(X_k) & = & \epsilon (1 - o_k)o_k
+	\end{eqnarray}
+	
+	このようにシグモイド関数の場合は，各ニューロンの出力から$f'(X_k)$を求めることができる．
+	この式を用いると各重みと閾値の更新式は以下のようになる．
+	\begin{itemize}
+		\item 中間層-出力層
+		
+		\begin{eqnarray}
+		  \delta_k & = & (o_k - t_k) \epsilon (1 - o_k)o_k \\
+		  w_{jk} & = &　w_{jk} - \eta \delta_k o_j \\
+                  \theta_{k} & = & \theta_{k}-\eta \delta_k
+		\end{eqnarray}
+
+		\item 中間層以下
+
+		\begin{eqnarray}
+		  \delta_j & = & \sum_{k = 1}^{K} \delta_k w_{jk} \epsilon (1 - o_j) o_j \\
+		  w_{ij} & = & w_{ij} - \eta \delta_j o_i \\
+                  \theta_{j} & = & \theta_{j}-\eta \delta_j
+		\end{eqnarray}
+	\end{itemize}
+        
+\newpage
+\appendix
+\section{合成関数の偏微分}
+\begin{itembox}[l]{合成関数の偏微分法}
+  $z=f(x,y)$が$x,y$で全微分可能であり，$x=x(t), y=y(t)$が$t$で微分可能ならば，\\
+  合成関数$z=f(x(t), y(t))$は$t$微分可能であり，次の式が成り立つ．
+
+  \begin{eqnarray}
+    \frac{dz}{dt}= \frac{\partial z}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial z}{\partial y}\frac{\partial y}{\partial t}
+  \end{eqnarray}
+
+\end{itembox}
+図でイメージすると，$z$は$x$と$y$の関数であり，$x$と$y$は$t$の関数である．したがって，
+$t$から$x,y$への線分と，$x$から$z$，$y$から$z$への線分が必要となる．
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width = 6cm]{fig/pic1.png}
+  \caption{合成関数の関係}
+  \label{fig:bp_detail}
+\end{figure}
+\end{document}
