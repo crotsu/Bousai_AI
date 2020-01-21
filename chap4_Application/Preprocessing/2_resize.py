@@ -22,6 +22,9 @@ def expand2square(pil_img, background_color):
         result.paste(pil_img, ((height - width) // 2, 0))
         return result
     
+
+# 画像サイズ
+photo_size = 100
     
 # ディレクトリがdisasterとnon_disasterなので，これをループするようにする
 prefix_name = ["", "non_"]
@@ -34,7 +37,9 @@ for pre in prefix_name:
 
     for filename in files:
 
-        im = Image.open(filename)
-        im_new = expand2square(im, (0, 0, 0)).resize((100, 100))
-        im_new.save(filename)
-    
+        img = Image.open(filename)
+        img = img.convert("RGB")
+        img_new = expand2square(img, (0, 0, 0)).resize((photo_size, photo_size))
+        img_new.save(filename)
+
+print("finished!")
