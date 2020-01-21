@@ -22,7 +22,6 @@ def expand2square(pil_img, background_color):
         result.paste(pil_img, ((height - width) // 2, 0))
         return result
     
-
 # 画像サイズ
 photo_size = 100
     
