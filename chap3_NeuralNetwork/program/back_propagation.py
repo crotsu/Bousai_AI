@@ -9,8 +9,8 @@ np.random.seed(3)
 
 # パラメータ
 EPSILON = 4.0 # シグモイド関数の傾き
-ETA = 0.1    # 学習係数
-TIME = 1000   # 学習回数
+ETA = 0.1     # 学習係数
+TIME = 1   # 学習回数
 
 # シグモイド関数
 def sigmoid(x):
@@ -32,7 +32,7 @@ dataY = np.array(
      [0]]
 )
 
-# 重みと閾値
+# 初期重みと初期閾値をランダムに与える
 wab = (np.random.rand()-0.5)*2 * 0.3 # -0.3から0.3の一様乱数
 wac = (np.random.rand()-0.5)*2 * 0.3
 wbd = (np.random.rand()-0.5)*2 * 0.3
@@ -43,10 +43,23 @@ tha = (np.random.rand()-0.5)*2 * 0.3
 thb = (np.random.rand()-0.5)*2 * 0.3
 thc = (np.random.rand()-0.5)*2 * 0.3
 
+'''
+wab =  1.94
+wac = -1.88
+wbd = -1.54
+wbe =  1.60
+wcd = -1.21
+wce =  1.29
+tha =  0.88
+thb = -0.92
+thc =  0.58
+'''
+
 # 誤差曲線のグラフ表示用
 x = []
 y = []
 
+# 学習
 for t in range(TIME):
 
     errorAll = 0.0
@@ -78,9 +91,9 @@ for t in range(TIME):
         # Back Propagation
         ##################
 
-        deltaa = (outa-dataY[p]) * EPSILON * (1.0-outa) * outa
-        deltab = deltaa * wab * EPSILON * (1.0-outb) * outb
-        deltac = deltaa * wac * EPSILON * (1.0-outc) * outc
+        deltaa = (outa - dataY[p]) * EPSILON * (1.0 - outa) * outa
+        deltab = deltaa * wab * EPSILON * (1.0 - outb) * outb
+        deltac = deltaa * wac * EPSILON * (1.0 - outc) * outc
 
         wab = wab - ETA * deltaa * outb
         wac = wac - ETA * deltaa * outc
@@ -94,7 +107,7 @@ for t in range(TIME):
         wce = wce - ETA * deltac * oute
         thc = thc - ETA * deltac
 
-    # グラフ表示用の変数
+    # 誤差曲線のグラフ表示用の変数
     x.append(t)
     y.append(errorAll)
 
