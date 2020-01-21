@@ -1,9 +1,9 @@
+#
+# 災害画像と非災害画像の名前を連番に変更する
+#
+
 import glob
 import os
-
-#
-# 災害画像と非災害画像の名前を変更する
-#
 
 # ディレクトリがdisasterとnon_disasterなので，これをループするようにする
 prefix_name = ["", "non_"]
