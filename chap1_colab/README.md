@@ -5,6 +5,8 @@
 
 ## 1 Google Colaboratoryを立ち上げる
 <a href="https://www.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">yahoo</a>
+<a href="https://www.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">新しいタブで開く</a>
+<a href="https://www.yahoo.co.jp/" target="_blank" rel=”noopener noreferrer”></a>
 
 [yahoo](https://www.yahoo.co.jp/){:target="_blank"}
 
