@@ -5,3 +5,7 @@ plot [][-1.5:1.5]1/(1+exp(-x)) with lines lw 3,tanh(x) with lines lw 3 dt 8
 plot [-15:15][-2:20]x<0 ? 0 : x with lines lw 3
 
 plot [-15:15][-2:20]x<0 ? 0.1*x : x with lines lw 3
+
+
+set key bottom
+plot [][-0.1:1.1]1/(1+exp(-0.5*x)) with lines lw 3,1/(1+exp(-1.0*x)) with lines lw 3, 1/(1+exp(-4.0*x)) with lines lw 3
