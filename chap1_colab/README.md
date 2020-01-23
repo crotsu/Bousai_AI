@@ -6,7 +6,7 @@
 ## 1 Google Colaboratoryを立ち上げる
 [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb)にアクセスする．  
 （セキュリティの関係で自動的に別タブ・別ウィンドウには飛ばないようになっている（Tabnabbing対策））  
-（右クリックで，<span style="color: red; ">新しいタブ</span>で開いてください）  
+（右クリックで，新しいタブで開いてください）  
 googleアカウントを持っていれば，以下のようなページにアクセスできる．  
 
 <img width="1337" alt="colab" src="https://user-images.githubusercontent.com/1255664/72673004-1be28180-3aa7-11ea-958e-4d04ed612c49.png">
