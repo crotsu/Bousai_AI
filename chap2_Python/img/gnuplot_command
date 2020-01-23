@@ -1,0 +1,5 @@
+set grid
+plot [-1:4.5] x**4-8*x**3+18*x**2-3*x+1 with lines lw 3 lt 7
+set output 'function2.png'
+set terminal png
+replot
