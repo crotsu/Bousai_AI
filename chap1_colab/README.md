@@ -4,6 +4,7 @@
 
 
 ## 1 Google Colaboratoryを立ち上げる
+[yahoo](https://www.yahoo.co.jp/){:target="_blank"}
 
 <a href="https://colab.research.google.com/notebooks/welcome.ipynb" target="_blank">Google Colaboratory</a>にアクセスする．
 
