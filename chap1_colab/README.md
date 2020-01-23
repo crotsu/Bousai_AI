@@ -111,6 +111,5 @@ GPUも無料に利用できる（利用制限はある）
 ツールがない人は，[Web](https://www.otwo.jp/blog/canvas-drawing/)を使ってもらう．
 
 ## 8 Webアプリで遊んでもらう
-
-## chap2 からニューラルネットワークの説明
-
+[Webデモ](https://ml-demo.zukucode.com/mnist)
+[解説](https://zukucode.com/2019/08/tensorflow-vue-mnist.html)
