@@ -4,14 +4,7 @@
 
 
 ## 1 Google Colaboratoryを立ち上げる
-<a href="https://www.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">yahoo</a>
-<a href="https://www.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">新しいタブで開く</a>
-<a href="https://www.yahoo.co.jp/" target="_blank" rel=”noopener noreferrer”></a>
-
-[yahoo](https://www.yahoo.co.jp/){:target="_blank"}
-
-<a href="https://colab.research.google.com/notebooks/welcome.ipynb" target="_blank">Google Colaboratory</a>にアクセスする．
-
+[Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb)にアクセスする．  
 googleアカウントを持っていれば，以下のようなページにアクセスできる．
 
 <img width="1337" alt="colab" src="https://user-images.githubusercontent.com/1255664/72673004-1be28180-3aa7-11ea-958e-4d04ed612c49.png">
