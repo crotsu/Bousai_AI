@@ -27,17 +27,17 @@ for pre in prefix_name:
         print(filename)
 
         img = Image.open(filename)
-        
+
         data = np.asarray(img)
         data = data/256 # 0.0から1.0に正規化
         data = data.reshape(photo_size, photo_size, 3)
-        
+
         X.append(data)
         if pre=="":
             y.append(0) # 非災害
         else:
             y.append(1) # 災害
 
-X = np.array(X, dtype=np.float32)            
+X = np.array(X, dtype=np.float32)
 np.savez("disaster.npz", X=X, y=y)
 print("finished!")

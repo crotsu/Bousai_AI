@@ -42,3 +42,11 @@ model.fit(X_train, y_train, epochs=60)
 score = model.evaluate(X_test, y_test)
 print('loss=', score[0])
 print('accuracy=', score[1])
+
+
+# テストデータ
+data = np.load("./Data/test.npz")
+X = data["X"] # 画像データ
+y = data["y"] # ラベルデータ
+X = np.reshape(X, (-1, data_size))
+print(model.predict(X))
