@@ -5,17 +5,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 乱数の種を設定
-np.random.seed(3)
+#np.random.seed(3)
 
 # パラメータ
 EPSILON = 4.0 # シグモイド関数の傾き
 ETA = 0.1     # 学習係数
-TIME = 1   # 学習回数
+TIME = 10000   # 学習回数
 
 # シグモイド関数
 def sigmoid(x):
     return 1/(1+np.exp(-1*EPSILON*x))
-
 
 # 入力（XORの入力部分）
 dataX = np.array(
@@ -41,20 +40,11 @@ threshold2 = (np.random.rand(1,1)-0.5)*2 * 0.3
 threshold1 = (np.random.rand(1,2)-0.5)*2 * 0.3
 '''
 
+#
 weight2 = np.zeros([1,2])
 weight1 = np.zeros([2,2])
-threshold2 = np.zeros([1,1])
-threshold1 = np.zeros([1,2])
-
-weight2[0,0] =  1.94 # wab
-weight2[0,1] = -1.88 # wac
-weight1[0,0] = -1.54 # wbd
-weight1[0,1] =  1.60 # wbe
-weight1[1,0] = -1.21 # wcd
-weight1[1,1] =  1.29 # wce
-threshold2[0,0] = 0.88 # tha
-threshold1[0,0] = -0.92 # thb
-threshold1[0,1] = 0.58 # thc
+threshold2 = np.zeros([1])
+threshold1 = np.zeros([2])
 
 weight2[0,0] = (np.random.rand()-0.5)*2 * 0.3
 weight2[0,1] = (np.random.rand()-0.5)*2 * 0.3
@@ -62,11 +52,17 @@ weight1[0,0] = (np.random.rand()-0.5)*2 * 0.3
 weight1[0,1] = (np.random.rand()-0.5)*2 * 0.3
 weight1[1,0] = (np.random.rand()-0.5)*2 * 0.3
 weight1[1,1] = (np.random.rand()-0.5)*2 * 0.3
-threshold2[0,0] =(np.random.rand()-0.5)*2 * 0.3
-threshold1[0,0] =(np.random.rand()-0.5)*2 * 0.3
-threshold1[0,1] =(np.random.rand()-0.5)*2 * 0.3
+threshold2[0] =(np.random.rand()-0.5)*2 * 0.3
+threshold1[0] =(np.random.rand()-0.5)*2 * 0.3
+threshold1[1] =(np.random.rand()-0.5)*2 * 0.3
 
-
+# 重みを表示
+print("学習前の重み")
+print('weight2\n', weight2)
+print('weight1\n', weight1)
+print('threshold2\n', threshold2)
+print('threshold1\n', threshold1)
+print()
 
 # 誤差曲線のグラフ表示用
 x = []
@@ -77,28 +73,34 @@ for t in range(TIME):
 
     errorAll = 0.0
     for p in range(len(dataX)):
-        
+
         # 前向き計算
         out1 = sigmoid(np.dot(weight1, dataX[p]) + threshold1)
         out2 = sigmoid(np.dot(weight2, out1) + threshold2)
-        print(out2)
         errorAll += (out2 - dataY[p])**2
 
         # Back Propagation
         delta2 = (out2 - dataY[p]) * EPSILON * (1.0 - out2) * out2
         delta1 = delta2 * weight2 * EPSILON * (1.0 - out1) * out1
-        
+
         weight2 -= ETA * delta2 * out1
         weight1 -= ETA * delta1 * dataX[p]
         threshold2 -= ETA * delta2
-        threshold1 -= ETA * delta1
+        threshold1 -= ETA * delta1[0]
 
     # 誤差曲線のグラフ表示用の変数
     x.append(t)
     y.append(errorAll)
 
+# 重みを表示
+print("学習前の重み")
+print('weight2\n', weight2)
+print('weight1\n', weight1)
+print('threshold2\n', threshold2)
+print('threshold1\n', threshold1)
+print()
+
 # 誤差曲線のグラフ表示
-# 点どうしを直線でつなぐ
 plt.plot(x, y)
 # 適切な表示範囲を指定
 ymin = 0.0

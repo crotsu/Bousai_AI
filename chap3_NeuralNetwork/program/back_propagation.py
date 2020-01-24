@@ -10,7 +10,7 @@ np.random.seed(3)
 # パラメータ
 EPSILON = 4.0 # シグモイド関数の傾き
 ETA = 0.1     # 学習係数
-TIME = 1   # 学習回数
+TIME = 1000   # 学習回数
 
 # シグモイド関数
 def sigmoid(x):
@@ -43,17 +43,18 @@ tha = (np.random.rand()-0.5)*2 * 0.3
 thb = (np.random.rand()-0.5)*2 * 0.3
 thc = (np.random.rand()-0.5)*2 * 0.3
 
-'''
-wab =  1.94
-wac = -1.88
-wbd = -1.54
-wbe =  1.60
-wcd = -1.21
-wce =  1.29
-tha =  0.88
-thb = -0.92
-thc =  0.58
-'''
+# 重みを表示
+print("学習前の重み")
+print('wab=', wab)
+print('wac=', wac)
+print('wbd=', wbd)
+print('wbe=', wbe)
+print('wcd=', wcd)
+print('wce=', wce)
+print('tha=', tha)
+print('thb=', thb)
+print('thc=', thc)
+print()
 
 # 誤差曲線のグラフ表示用
 x = []
@@ -65,9 +66,9 @@ for t in range(TIME):
     errorAll = 0.0
     for p in range(len(dataX)):
 
-        ##########
+        #############
         # 前向き計算
-        ##########
+        #############
 
         # 入力層
         outd = dataX[p][0]
@@ -86,6 +87,10 @@ for t in range(TIME):
 
         error = (outa-dataY[p])**2
         errorAll += error
+
+        # 学習最後のネットワークの出力
+        if t==TIME-1:
+            print(dataY[p], outa, error)
 
         ##################
         # Back Propagation
@@ -112,6 +117,8 @@ for t in range(TIME):
     y.append(errorAll)
 
 # 重みを表示
+print()
+print("学習後の重み")
 print('wab=', wab)
 print('wac=', wac)
 print('wbd=', wbd)
@@ -121,9 +128,9 @@ print('wce=', wce)
 print('tha=', tha)
 print('thb=', thb)
 print('thc=', thc)
+print()
 
 # 誤差曲線のグラフ表示
-# 点どうしを直線でつなぐ
 plt.plot(x, y)
 # 適切な表示範囲を指定
 ymin = 0.0
