@@ -20,6 +20,7 @@ mnist = tf.keras.datasets.mnist
 x_train, x_test = x_train / 255.0, x_test / 255.0
 output = model.predict(x_test)
 
+# 認識結果を表示する（1万枚は多すぎるので12枚のみ）
 for i in output[:12]:
     print(i.argmax())
 
