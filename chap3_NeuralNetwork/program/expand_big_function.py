@@ -37,12 +37,21 @@ tha =  0.88
 thb = -0.92
 thc =  0.58
 
+# 展開した関数
+def expand(x1, x2):
+    y = sigmoid(1.94 * sigmoid(-1.54 * x1 + 1.60 * x2 + -0.92) + -1.88 * sigmoid(-1.21 * x1 + 1.29 * x2 + 0.58) + 0.88)
+    return y
+
 for p in range(len(dataX)):
 
     ##########
     # 前向き計算
     ##########
-    outa = sigmoid(wab * sigmoid(wbd * dataX[p][0] + wbe * dataX[p][1] + thb) + wac * sigmoid(wcd * dataX[p][0] + wce * dataX[p][1] + thc) + tha)
+    #outa = sigmoid(wab * sigmoid(wbd * dataX[p][0] + wbe * dataX[p][1] + thb) + wac * sigmoid(wcd * dataX[p][0] + wce * dataX[p][1] + thc) + tha)
+
+    x1 = dataX[p][0]
+    x2 = dataX[p][1]
+    outa = expand(x1, x2)
 
     error = (outa-dataY[p])**2
     print(dataY[p], outa, error)
