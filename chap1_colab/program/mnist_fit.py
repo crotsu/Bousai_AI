@@ -31,10 +31,3 @@ model.compile(optimizer='adam',
 # モデルを学習させる
 model.fit(x_train, y_train, epochs=5)
 model.evaluate(x_test,  y_test, verbose=2)
-
-#
-# 追加部分
-#
-# 学習済みのモデルを保存する
-# 重みの保存
-model.save_weights('mnist_weight')
