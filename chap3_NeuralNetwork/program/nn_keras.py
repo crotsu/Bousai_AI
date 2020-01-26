@@ -1,7 +1,8 @@
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Activation
-from keras.optimizers import SGD
+from tensorflow.python.keras import Sequential
+from tensorflow.python.keras.layers import Dense, Activation
+from tensorflow.python.keras.optimizers import SGD
+import tensorflow as tf
 
 # トレーニングデータ
 # XOR
@@ -19,7 +20,8 @@ model.add(Activation('sigmoid'))
 model.add(Dense(units=1))
 model.add(Activation('linear'))
 
-model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.1))
+sgd = tf.keras.optimizers.SGD(lr=0.1)
+model.compile(loss='mean_squared_error', optimizer=sgd)
 
 # モデル学習
 model.fit(X, Y, epochs=4000)
