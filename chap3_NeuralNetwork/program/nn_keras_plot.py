@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.optimizers import SGD
@@ -22,7 +23,14 @@ model.add(Activation('linear'))
 model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.1))
 
 # モデル学習
-model.fit(X, Y, epochs=4000, batch_size=4)
+epochs = 4000
+stack = model.fit(X, Y, epochs=epochs, batch_size=4)
+
+x = range(epochs)
+plt.plot(x, stack.history['loss'], label="loss")
+plt.title("loss")
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.show()
 
 # 学習結果の確認
 print(model.predict(X, batch_size=4))
