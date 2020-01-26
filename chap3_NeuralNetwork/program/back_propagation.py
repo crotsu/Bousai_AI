@@ -63,9 +63,9 @@ y = []
 # 学習
 for t in range(TIME):
 
+    outall = []
     errorAll = 0.0
     for p in range(len(dataX)):
-
         #############
         # 前向き計算
         #############
@@ -85,17 +85,14 @@ for t in range(TIME):
         xa = wab * outb + wac * outc + tha
         outa = sigmoid(xa)
 
+        # 誤差計算
+        outall.append(outa)
         error = (outa-dataY[p])**2
         errorAll += error
-
-        # 学習最後のネットワークの出力
-        if t==TIME-1:
-            print(dataY[p], outa, error)
 
         ##################
         # Back Propagation
         ##################
-
         deltaa = (outa - dataY[p]) * EPSILON * (1.0 - outa) * outa
         deltab = deltaa * wab * EPSILON * (1.0 - outb) * outb
         deltac = deltaa * wac * EPSILON * (1.0 - outc) * outc
@@ -115,6 +112,14 @@ for t in range(TIME):
     # 誤差曲線のグラフ表示用の変数
     x.append(t)
     y.append(errorAll)
+
+# 学習後の出力
+print("学習後の出力")
+print(outall[0])
+print(outall[1])
+print(outall[2])
+print(outall[3])
+print()
 
 # 重みを表示
 print()
