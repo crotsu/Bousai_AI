@@ -25,9 +25,9 @@ def expand2square(pil_img, background_color):
 
 # 各種パラメータ
 # 画像サイズ
-photo_size = 100
+photo_size = 200
 # パス
-path = "../disaster_decision/test_data/*"
+path = "./test_data/*"
 # 変換後のファイル名
 basename = "testIMG_"
 
@@ -89,5 +89,5 @@ for filename in files:
     y.append(1) # 災害か非災害かわからないので，とりあえず0を入れておく．
 
 X = np.array(X, dtype=np.float32)
-np.savez("../Data/test.npz", X=X, y=y)
+np.savez("./test.npz", X=X, y=y)
 print("3. [makedata] finished!")

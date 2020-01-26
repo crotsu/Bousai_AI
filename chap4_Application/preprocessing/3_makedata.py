@@ -8,7 +8,7 @@ from PIL import Image
 import numpy as np
 
 # 画像サイズ
-photo_size = 100
+photo_size = 200
 
 # ディレクトリがdisasterとnon_disasterなので，これをループするようにする
 prefix_name = ["", "non_"]

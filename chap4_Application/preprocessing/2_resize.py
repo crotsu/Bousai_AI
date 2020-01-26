@@ -21,10 +21,10 @@ def expand2square(pil_img, background_color):
         result = Image.new(pil_img.mode, (height, height), background_color)
         result.paste(pil_img, ((height - width) // 2, 0))
         return result
-    
+
 # 画像サイズ
-photo_size = 100
-    
+photo_size = 200
+
 # ディレクトリがdisasterとnon_disasterなので，これをループするようにする
 prefix_name = ["", "non_"]
 
