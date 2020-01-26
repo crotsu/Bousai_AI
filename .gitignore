@@ -1,3 +1,8 @@
 chap3_NeuralNetwork/neural_network/
+
+chap4_Application/Data/
 chap4_Application/disaster_decision/
 chap4_Application/disaster_decision_master/
+chap4_Application/disaster_decision150/
+chap4_Application/disaster_decision400/
+chap4_Application/preprocessing/test_data/
