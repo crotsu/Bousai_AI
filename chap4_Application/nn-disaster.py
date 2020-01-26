@@ -1,3 +1,4 @@
+import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Activation, Dropout, Dense
@@ -5,7 +6,7 @@ from keras.utils import np_utils
 import numpy as np
 
 # 乱数の種を初期化
-np.random.seed(3) # 自分の環境ではseed=3のとき，accuracy=0.8167
+tf.random.set_seed(0) # 自分の環境ではseed=3のとき，accuracy=0.8167
 
 # 変数の宣言
 classes = 2 # クラスの数：災害 or 非災害
