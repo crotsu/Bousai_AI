@@ -5,9 +5,6 @@ from keras.layers import Activation, Dropout, Dense
 from keras.utils import np_utils
 import numpy as np
 
-# 乱数の種を初期化
-tf.random.set_seed(0) # 自分の環境ではseed=0のとき，accuracy=0.9250
-
 # 変数の宣言
 classes = 2 # クラスの数：災害 or 非災害
 data_size = 200 * 200 * 3 # 縦100×横100×3原色
