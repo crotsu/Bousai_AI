@@ -22,7 +22,7 @@ model.add(Activation('linear'))
 model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.1))
 
 # モデル学習
-model.fit(X, Y, epochs=4000, batch_size=4)
+model.fit(X, Y, epochs=4000)
 
 # 学習結果の確認
-print(model.predict(X, batch_size=4))
+print(model.predict(X))
